@@ -1,6 +1,6 @@
 'use strict'
 
-const { spawn } = require('cross-spaw')
+const { spawn } = require('cross-spawn')
 const pkg = require('../package.json')
 
 const dependencies = Object.keys(pkg.dependencies)
