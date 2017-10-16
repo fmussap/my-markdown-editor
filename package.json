@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "yarn dev",
-    "dev": "webpack-dashboard -- node server.js",
+    "dev": "webpack-dashboard  -- node server.js",
     "test": "jest --coverage",
     "test:watch": "yarn test -- --watch",
     "lint": "standard --parser babel-eslint --verbose | snazzy",
@@ -57,6 +57,9 @@
   "dependencies": {
     "babel-runtime": "^6.26.0",
     "eslint-plugin-standard": "^3.0.1",
+    "highlight.js": "^9.12.0",
+    "marked": "^0.3.6",
+    "normalize.css": "^7.0.0",
     "preact": "^8.2.5",
     "preact-compat": "^3.17.0",
     "prop-types": "^15.6.0",

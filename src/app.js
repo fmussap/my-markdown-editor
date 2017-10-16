@@ -1,8 +1,18 @@
 'use strict'
 
 import React, { Component } from 'react'
+import marked from 'marked'
+import hljs from 'highlight.js'
+
+import MarkdownEditor from './components/markdown-editor'
 
 import './css/style.css'
+
+marked.setOptions({
+  highlight: (code) => {
+    return hljs.highlightAuto(code).value
+  }
+})
 
 export default class App extends Component {
   constructor () {
@@ -10,23 +20,23 @@ export default class App extends Component {
     this.state = {
       value: ''
     }
-    this.handleSubmit = (e) => {
-      e.preventDefault()
+    this.handleChange = (e) => {
       this.setState({
-        value: e.target.textarea.value
+        value: e.target.value
       })
+    }
+    this.getMarkup = () => {
+      return { __html: marked(this.state.value) }
     }
   }
 
   render () {
     return (
-      <div className='editor'>
-        <form onSubmit={this.handleSubmit}>
-          <textarea name='textarea' />
-          <button type='submit'>Renderizar markup</button>
-        </form>
-        <div className='view' />
-      </div>
+      <MarkdownEditor
+        value={this.state.value}
+        handleChange={this.handleChange}
+        getMarkup={this.getMarkup}
+      />
     )
   }
 }
