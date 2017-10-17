@@ -3,29 +3,31 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import MarkdownEditorHeader from './markdown-editor-header'
+import MarkdownEditorHeader from './header'
 
 const MarkdownEditor = ({
-  value,
-  isSaving,
-  handleChange,
   getMarkup,
-  handleRemove
+  handleChange,
+  textareaRef,
+  value,
+  ...props
 }) => (
   <section className='editor'>
-    <MarkdownEditorHeader isSaving={isSaving} handleRemove={handleRemove} />
+    <MarkdownEditorHeader {...props} />
     <textarea
       value={value}
       onChange={handleChange}
       autoFocus
+      ref={textareaRef}
     />
     <article className='view' dangerouslySetInnerHTML={getMarkup()} />
   </section>
 )
 
 MarkdownEditor.prototypes = {
-  handleRemove: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
   getMarkup: PropTypes.func.isRequired,
+  textareaRef: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired
 }
 
