@@ -21,27 +21,38 @@ body {
 
 .editor {
   display: flex;
+  flex-wrap: wrap;
   height: 100%;
   width: 100%;
 }
 
-form {
+.editor-header {
+  background: #222;
   display: flex;
-  flex-direction: column
+  height: 40px;
+  justify-content: flex-end;
+  width: 100%
 }
 
-form,
+.editor-header .save-message {
+  align-items: center;
+  display: flex;
+  font: 15px sans-serif;
+  margin: 0;
+  padding: 0 20px;
+}
+
+textarea,
 .view {
-  min-width: 50%;
-  max-height: 100%
+  height: 100%;
+  max-width: 50%;
+  min-width: 50%
 }
 
 textarea {
-  border: 8px solid #fc0;
   font-size: 18px;
   padding: 10px;
   resize: none;
-  width: 100%
 }
 
 textarea:focus {
@@ -51,5 +62,6 @@ textarea:focus {
 .view {
   background: #333;
   color: #fff;
+  font-family: sans-serif;
   padding: 10px;
 }
