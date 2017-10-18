@@ -8,6 +8,6 @@ module.exports = (config, env) => {
 
   newConfig.module.rules.push(common.standardPreLoader)
   newConfig.resolve = common.resolve
-// teste
+
   return newConfig
 }
