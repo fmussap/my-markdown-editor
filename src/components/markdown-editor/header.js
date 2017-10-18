@@ -3,20 +3,27 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const MarkdownEditorHeader = ({ isSaving, handleCreate, handleRemove }) => (
+import Button from 'components/buttons'
+
+const MarkdownEditorHeader = ({ handleCreate, handleRemove, isSaving, value }) => (
   <header className='editor-header'>
     <p className='save-message' style={{ color: !isSaving ? 'lightgreen' : 'lightgray' }}>
-      {isSaving ? 'Salving' : 'Salved!'}
+      {isSaving ? 'Salving' : value === '' ? value : 'Salved!'}
     </p>
-    <button onClick={handleCreate} className='button-create'>New</button>
-    <button onClick={handleRemove} className='button-remove'>Remove</button>
+    <Button onClick={handleCreate} cssType='success'>
+      New
+    </Button>
+    <Button onClick={handleRemove} cssType='danger'>
+      Remove
+    </Button>
   </header>
 )
 
 MarkdownEditorHeader.propTypes = {
   handleCreate: PropTypes.func.isRequired,
   handleRemove: PropTypes.func.isRequired,
-  isSaving: PropTypes.bool.isRequired
+  isSaving: PropTypes.bool.isRequired,
+  value: PropTypes.string
 }
 
 export default MarkdownEditorHeader

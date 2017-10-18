@@ -13,7 +13,7 @@ const MarkdownEditor = ({
   ...props
 }) => (
   <section className='editor'>
-    <MarkdownEditorHeader {...props} />
+    <MarkdownEditorHeader {...props} value={value} />
     <textarea
       value={value}
       onChange={handleChange}
