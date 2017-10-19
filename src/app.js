@@ -2,8 +2,9 @@
 
 import React, { Component } from 'react'
 import marked from 'marked'
+import { v4 } from 'node-uuid'
 
-import MarkdownEditor from 'components/markdown-editor'
+import MarkdownEditor from 'views/markdown-editor'
 
 import './css/style.css'
 
@@ -23,6 +24,7 @@ export default class App extends Component {
     super()
     this.state = {
       value: '',
+      id: v4(),
       isSaving: false
     }
 
@@ -38,18 +40,21 @@ export default class App extends Component {
     }
 
     this.handleCreate = () => {
-      this.setState({ value: '' })
+      this.setState({
+        id: v4(),
+        value: ''
+      })
       this.textarea.focus()
     }
 
     this.handleRemove = () => {
-      localStorage.removeItem('md')
-      this.setState({ value: '' })
+      localStorage.removeItem(this.state.id)
+      this.handleCreate()
     }
 
     this.handleSave = () => {
       if (this.state.isSaving) {
-        localStorage.setItem('md', this.state.value)
+        localStorage.setItem(this.state.id, this.state.value)
         this.setState({
           isSaving: false
         })
@@ -59,11 +64,6 @@ export default class App extends Component {
     this.textareaRef = (node) => {
       this.textarea = node
     }
-  }
-
-  componentDidMount () {
-    const value = localStorage.getItem('md')
-    this.setState({ value: value || '' })
   }
 
   componentDidUpdate () {
