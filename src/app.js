@@ -23,18 +23,26 @@ export default class App extends Component {
   constructor () {
     super()
     this.state = {
-      value: '',
+      files: [],
       id: v4(),
-      isSaving: false
+      isSaving: false,
+      value: {
+        title: '',
+        content: ''
+      }
     }
 
+    this.getFiles = () => (
+      Object.keys(localStorage)
+    )
+
     this.getMarkup = () => {
-      return { __html: marked(this.state.value) }
+      return { __html: marked(this.state.value.content) }
     }
 
     this.handleChange = (e) => {
       this.setState({
-        value: e.target.value,
+        value: {content: e.target.value},
         isSaving: true
       })
     }
@@ -42,22 +50,37 @@ export default class App extends Component {
     this.handleCreate = () => {
       this.setState({
         id: v4(),
-        value: ''
+        value: {
+          title: '',
+          content: ''
+        }
       })
       this.textarea.focus()
     }
 
+    this.handleOpenFile = (fileId) => () => {
+      this.setState({
+        id: fileId,
+        value: JSON.parse(localStorage.getItem(fileId))
+      })
+    }
+
     this.handleRemove = () => {
       localStorage.removeItem(this.state.id)
+      this.setState({ files: this.getFiles() })
       this.handleCreate()
     }
 
     this.handleSave = () => {
       if (this.state.isSaving) {
-        localStorage.setItem(this.state.id, this.state.value)
+        localStorage.setItem(this.state.id, JSON.stringify({
+          title: 'sem title',
+          content: this.state.value.content
+        }))
         this.setState({
           isSaving: false
         })
+        this.setState({ files: this.getFiles() })
       }
     }
 
@@ -71,6 +94,12 @@ export default class App extends Component {
     this.timer = setTimeout(this.handleSave, 500)
   }
 
+  componentDidMount () {
+    let files = this.getFiles()
+    files = files.filter((id) => id.match(/^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/))
+    files && this.setState({ files })
+  }
+
   componentWillUnmount () {
     clearInterval(this.timer)
   }
@@ -78,9 +107,11 @@ export default class App extends Component {
   render () {
     return (
       <MarkdownEditor
+        files={this.state.files}
         getMarkup={this.getMarkup}
         handleChange={this.handleChange}
         handleCreate={this.handleCreate}
+        handleOpenFile={this.handleOpenFile}
         handleRemove={this.handleRemove}
         isSaving={this.state.isSaving}
         textareaRef={this.textareaRef}

@@ -45,8 +45,8 @@ body {
 textarea,
 .view {
   height: 100%;
-  max-width: 50%;
-  min-width: 50%
+  max-width: 40%;
+  min-width: 40%
 }
 
 textarea {
@@ -57,6 +57,12 @@ textarea {
 
 textarea:focus {
   outline: 0 none;
+}
+
+.files-list-container {
+  background: #fc0;
+  max-width: 20%;
+  min-width: 20%;
 }
 
 .view {
