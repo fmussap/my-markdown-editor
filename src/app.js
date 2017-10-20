@@ -22,65 +22,67 @@ import('highlight.js').then((hljs) => {
 export default class App extends Component {
   constructor () {
     super()
-    this.state = {
-      files: [],
-      id: v4(),
-      isSaving: false,
-      value: {
-        title: '',
-        content: ''
-      }
-    }
+    this.clearState = () => ({
+      title: '',
+      value: '',
+      id: v4()
+    })
 
-    this.getFiles = () => (
-      Object.keys(localStorage)
-    )
+    this.state = {
+      ...this.clearState(),
+      isSaving: null,
+      files: {}
+    }
 
     this.getMarkup = () => {
-      return { __html: marked(this.state.value.content) }
+      return { __html: marked(this.state.value) }
     }
 
-    this.handleChange = (e) => {
+    this.handleChange = (field) => (e) => {
       this.setState({
-        value: {content: e.target.value},
+        [field]: e.target.value,
         isSaving: true
       })
     }
 
     this.handleCreate = () => {
-      this.setState({
-        id: v4(),
-        value: {
-          title: '',
-          content: ''
-        }
-      })
+      this.setState(this.clearState())
       this.textarea.focus()
     }
 
     this.handleOpenFile = (fileId) => () => {
       this.setState({
-        id: fileId,
-        value: JSON.parse(localStorage.getItem(fileId))
+        title: this.state.files[fileId].title,
+        value: this.state.files[fileId].content,
+        id: fileId
       })
     }
 
     this.handleRemove = () => {
-      localStorage.removeItem(this.state.id)
-      this.setState({ files: this.getFiles() })
-      this.handleCreate()
+      if (this.state.files) {
+        // eslint-disable-next-line no-unused-vars
+        const { [this.state.id]: id, ...files } = this.state.files
+        localStorage.setItem('markdown-editor', JSON.stringify(files))
+        this.setState({ files })
+        this.handleCreate()
+      }
     }
 
     this.handleSave = () => {
       if (this.state.isSaving) {
-        localStorage.setItem(this.state.id, JSON.stringify({
-          title: 'sem title',
-          content: this.state.value.content
-        }))
+        const files = {
+          ...this.state.files,
+          [this.state.id]: {
+            title: this.state.title || 'no title',
+            content: this.state.value
+          }
+        }
+
+        localStorage.setItem('markdown-editor', JSON.stringify(files))
         this.setState({
-          isSaving: false
+          isSaving: false,
+          files
         })
-        this.setState({ files: this.getFiles() })
       }
     }
 
@@ -95,9 +97,8 @@ export default class App extends Component {
   }
 
   componentDidMount () {
-    let files = this.getFiles()
-    files = files.filter((id) => id.match(/^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/))
-    files && this.setState({ files })
+    const files = JSON.parse(localStorage.getItem('markdown-editor'))
+    this.setState({ files })
   }
 
   componentWillUnmount () {
@@ -115,6 +116,7 @@ export default class App extends Component {
         handleRemove={this.handleRemove}
         isSaving={this.state.isSaving}
         textareaRef={this.textareaRef}
+        title={this.state.title}
         value={this.state.value}
       />
     )

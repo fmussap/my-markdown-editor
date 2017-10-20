@@ -16,11 +16,15 @@ const MarkdownEditor = ({
   ...props
 }) => (
   <section className='editor'>
-    <MarkdownEditorHeader {...props} value={value} />
+    <MarkdownEditorHeader
+      {...props}
+      value={value}
+      handleChange={handleChange}
+    />
     <Files files={files} handleOpenFile={handleOpenFile} />
     <textarea
-      value={value.content}
-      onChange={handleChange}
+      value={value}
+      onChange={handleChange('value')}
       autoFocus
       ref={textareaRef}
     />
@@ -29,6 +33,7 @@ const MarkdownEditor = ({
 )
 
 MarkdownEditor.prototypes = {
+  files: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   getMarkup: PropTypes.func.isRequired,
   textareaRef: PropTypes.func.isRequired,
