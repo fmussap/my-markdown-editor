@@ -97,7 +97,7 @@ export default class App extends Component {
   }
 
   componentDidMount () {
-    const files = JSON.parse(localStorage.getItem('markdown-editor'))
+    const files = JSON.parse(localStorage.getItem('markdown-editor')) || {}
     this.setState({ files })
   }
 

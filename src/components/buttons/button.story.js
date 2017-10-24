@@ -1,7 +1,8 @@
 'use strict'
 
 import React from 'react'
-import { storiesOf, action } from '@storybook/react'
+import { storiesOf } from '@storybook/react'
+import { action } from '@storybook/addon-actions'
 
 import Button from './index'
 
@@ -11,6 +12,12 @@ stories.addDecorator((story) => (
   <div style={{ display: 'flex', height: 40 }}>
     {story()}
   </div>
+))
+
+stories.add('Button default', () => (
+  <Button onClick={action('success')}>
+    Default button
+  </Button>
 ))
 
 stories.add('Button success', () => (
