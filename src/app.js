@@ -18,7 +18,7 @@ import('highlight.js').then((hljs) => {
     }
   })
 })
-
+// test
 export default class App extends Component {
   constructor () {
     super()
